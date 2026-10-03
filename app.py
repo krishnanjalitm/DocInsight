@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import get_db_connection
+from flask import flash
+import sqlite3
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key"
@@ -11,37 +13,38 @@ def home():
     return "DocInsight is running!"
 
 
-@app.route("/register", methods=["GET" , "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
 
     if request.method == "POST":
         name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
-        hashed_password = generate_password_hash(password)
 
+        hashed_password = generate_password_hash(password)
 
         connection = get_db_connection()
 
-        connection.execute(
-            """
-            INSERT INTO users (name, email, password)
-            VALUES (?, ?, ?)
-            """,
-            (name, email, hashed_password)
-        )
+        try:
+            connection.execute(
+                """
+                INSERT INTO users (name, email, password)
+                VALUES (?, ?, ?)
+                """,
+                (name, email, hashed_password)
+            )
 
-        connection.commit()
+            connection.commit()
+
+        except sqlite3.IntegrityError:
+            connection.close()
+            flash("Email already registered. Please use another email.", "error")
+            return redirect(url_for("register"))
+
         connection.close()
 
-        print("User registered successfully!")
-
-
-
-        # print("Name:", name)
-        # print("Email:", email)
-        # # print("Password:", password)
-        # print("Hashed password:", hashed_password)
+        flash("Registration successful! You can now login.", "success")
+        return redirect(url_for("login"))
 
     return render_template("register.html")
 
@@ -65,9 +68,11 @@ def login():
             session["user_id"] = user["user_id"]
             session["name"] = user["name"]
             session["role"] = user["role"]
-            return "Login successful!"
+            
+            return redirect(url_for("dashboard")) 
 
-        return "Invalid email or password!"
+        flash("Invalid email or password.", "error")
+        return redirect(url_for("login"))
 
     return render_template("login.html")
 
@@ -83,6 +88,22 @@ def dashboard():
         name=session["name"],
         role=session["role"]
     )
+
+@app.route("/admin")
+def admin_dashboard():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if session.get("role") != "admin":
+        return "Access denied! Admins only."
+
+    return render_template(
+        "admin_dashboard.html",
+        name=session["name"],
+        role=session["role"]
+    )
+
 
 @app.route("/logout")
 def logout():
