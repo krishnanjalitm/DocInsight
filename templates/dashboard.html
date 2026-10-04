@@ -4,15 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - DocInsight</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - DocInsight</title>
+    <style>
+    .flash {
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+</style>
 </head>
 
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
     <h1>DocInsight</h1>
 
     <h2>Welcome, {{ name }}!</h2>
 
     <p>You are logged in as: {{ role }}</p>
+
+    <h3>Upload a PDF</h3>
+
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+
+        <input type="file" name="document" accept=".pdf" required>
+
+        <br><br>
+
+        <button type="submit">Upload PDF</button>
+
+    </form>
+
+    <br>
 
     <a href="/logout">Logout</a>
 

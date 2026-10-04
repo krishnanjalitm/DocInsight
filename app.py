@@ -1,12 +1,20 @@
+from pdf_processor import extract_text_from_pdf
 from flask import Flask, render_template, request, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import get_db_connection
 from flask import flash
+from werkzeug.utils import secure_filename
+import os
 import sqlite3
+import uuid
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key"
+UPLOAD_FOLDER = "uploads"
 
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route("/")
 def home():
@@ -88,6 +96,59 @@ def dashboard():
         name=session["name"],
         role=session["role"]
     )
+
+
+@app.route("/upload", methods=["POST"])
+def upload():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    file = request.files.get("document")
+
+    if not file or file.filename == "":
+        flash("Please select a PDF file.", "error")
+        return redirect(url_for("dashboard"))
+
+    if not file.filename.lower().endswith(".pdf"):
+        flash("Only PDF files are allowed.", "error")
+        return redirect(url_for("dashboard"))
+
+    original_filename = secure_filename(file.filename)
+
+    unique_filename = f"{session['user_id']}_{uuid.uuid4().hex}_{original_filename}"
+
+    file.save(
+        os.path.join(app.config["UPLOAD_FOLDER"], unique_filename)
+    )
+
+    file_path = os.path.join(
+    app.config["UPLOAD_FOLDER"],
+    unique_filename
+    )
+
+    extracted_text = extract_text_from_pdf(file_path)
+
+    print("PDF text extracted successfully!")
+    print(extracted_text[:1000])
+
+    connection = get_db_connection()
+
+    connection.execute(
+        """
+        INSERT INTO documents (user_id, filename, extracted_text)
+        VALUES (?, ?, ?)
+        """,
+        (session["user_id"], unique_filename, extracted_text)
+    )
+
+    connection.commit()
+    connection.close()
+
+    flash("PDF uploaded successfully!", "success")
+
+    return redirect(url_for("dashboard"))
+
 
 @app.route("/admin")
 def admin_dashboard():
