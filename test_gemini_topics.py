@@ -1,3 +1,5 @@
+import json
+
 from database import get_db_connection
 from gemini_service import extract_topics
 
@@ -23,8 +25,15 @@ if document and document["extracted_text"]:
 
     result = extract_topics(document["extracted_text"])
 
-    print("----- Gemini Result -----")
-    print(result)
+    try:
+        topics = json.loads(result)
+
+        print("----- JSON Result -----")
+        print(topics)
+
+    except json.JSONDecodeError:
+        print("Gemini did not return valid JSON.")
+        print(result)
 
 else:
     print("No document or extracted text found.")

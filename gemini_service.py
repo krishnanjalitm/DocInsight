@@ -8,14 +8,33 @@ api_key = os.getenv("GEMINI_API_KEY")
 
 client = genai.Client(api_key=api_key)
 
+
 def extract_topics(document_text):
 
     prompt = f"""
-You are analyzing a document.
+Analyze the following document.
 
-Read the following document and identify its main topics and important subtopics.
+Identify the main topics and their important subtopics.
 
-Return the answer in a simple structured format.
+Return ONLY valid JSON in exactly this format:
+
+{{
+    "topics": [
+        {{
+            "topic": "Main topic name",
+            "subtopics": [
+                "Subtopic 1",
+                "Subtopic 2",
+                "Subtopic 3"
+            ]
+        }}
+    ]
+}}
+
+Do not include Markdown.
+Do not include explanations.
+Do not include ```json.
+Return only the JSON object.
 
 Document:
 {document_text}
@@ -23,7 +42,10 @@ Document:
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
-        contents=prompt
+        contents=prompt,
+        config={
+            "response_mime_type": "application/json"
+        }
     )
 
     return response.text
