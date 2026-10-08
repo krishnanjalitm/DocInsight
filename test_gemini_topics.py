@@ -1,0 +1,30 @@
+from database import get_db_connection
+from gemini_service import extract_topics
+
+
+connection = get_db_connection()
+
+document = connection.execute(
+    """
+    SELECT document_id, filename, extracted_text
+    FROM documents
+    ORDER BY document_id DESC
+    LIMIT 1
+    """
+).fetchone()
+
+connection.close()
+
+
+if document and document["extracted_text"]:
+
+    print("Analyzing:", document["filename"])
+    print("\nGemini is analyzing the document...\n")
+
+    result = extract_topics(document["extracted_text"])
+
+    print("----- Gemini Result -----")
+    print(result)
+
+else:
+    print("No document or extracted text found.")
