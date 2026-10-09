@@ -19,7 +19,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route("/")
 def home():
-    return "DocInsight is running!"
+    # return "DocInsight is running!"
+    return render_template("index.html")
 
 
 @app.route("/register", methods=["GET", "POST"])

@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#070b19">
+    <meta name="description"
+          content="Explore PDF documents with AI-powered topic extraction, custom prompts, and clear summaries.">
+    <title>DocInsight — Understand Documents. Get Answers.</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="container nav-content">
+        <a href="{{ url_for('home') }}" class="brand">
+            <span class="brand-mark">✦</span>
+            Doc<span>Insight</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#about">About</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+            <a href="{{ url_for('register') }}" class="btn">Sign Up <span>↗</span></a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero container">
+        <div class="hero-content">
+            <span class="eyebrow">AI-powered document intelligence</span>
+
+            <h1>
+                Understand Documents.
+                <span class="gradient-text">Get Answers.</span>
+            </h1>
+
+            <p>
+                DocInsight uses Google Gemini and intelligent prompt
+                engineering to help you explore topics, understand
+                important information, and summarize your PDF documents.
+                Less searching. More understanding.
+            </p>
+
+            <div class="hero-actions">
+                <a href="{{ url_for('register') }}" class="btn">
+                    Get Started Free <span>→</span>
+                </a>
+                <a href="#how-it-works" class="btn btn-outline">
+                    See How It Works
+                </a>
+            </div>
+
+            <div class="trust-row">
+                <span>✧ AI-powered analysis</span>
+                <span>◈ Document-focused insights</span>
+                <span>⌁ PDF support</span>
+            </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Illustration of document analysis">
+            <div class="orb"></div>
+
+            <div class="app-window">
+                <div class="window-top">
+                    <span>✦ DocInsight workspace</span>
+                    <span>● ● ●</span>
+                </div>
+
+                <div class="window-body">
+                    <aside class="window-sidebar">
+                        <span class="side-item active">▦ Dashboard</span>
+                        <span class="side-item">⇧ Upload PDF</span>
+                        <span class="side-item">◇ Topics</span>
+                        <span class="side-item">▤ Summaries</span>
+                        <span class="side-item">⚙ Settings</span>
+                    </aside>
+
+                    <div class="window-main">
+                        <strong>Document Analysis</strong>
+
+                        <div class="document-pill">
+                            <div class="file-icon">PDF</div>
+                            <div>
+                                <strong>Research_Paper.pdf</strong>
+                                <div class="muted">PDF document preview</div>
+                            </div>
+                        </div>
+
+                        <div class="demo-tabs">
+                            <span class="demo-tab active">Topics</span>
+                            <span class="demo-tab">Subtopics</span>
+                            <span class="demo-tab">Summary</span>
+                        </div>
+
+                        <div class="topic-row">
+                            <span>01. Introduction</span><span>›</span>
+                        </div>
+                        <div class="topic-row">
+                            <span>02. Literature Review</span><span>›</span>
+                        </div>
+                        <div class="topic-row">
+                            <span>03. Methodology</span><span>›</span>
+                        </div>
+                        <div class="topic-row">
+                            <span>04. Results &amp; Discussion</span><span>›</span>
+                        </div>
+
+                        <div class="insight-card">
+                            <span class="eyebrow">✦ AI INSIGHT</span>
+                            <h4>Complex ideas, made clearer.</h4>
+                            <div class="muted">
+                                Explore key topics and review important points.
+                            </div>
+                            <div class="mini-bar"><span></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Powerful features</span>
+                <h2>Everything you need to explore a PDF</h2>
+                <p>
+                    Turn lengthy documents into information that's easier
+                    to navigate, understand, and review.
+                </p>
+            </div>
+
+            <div class="feature-grid">
+                <article class="card feature-card">
+                    <div class="feature-icon">▤</div>
+                    <h3>PDF Analysis</h3>
+                    <p>Upload your PDF and extract its text for AI-powered analysis.</p>
+                </article>
+
+                <article class="card feature-card">
+                    <div class="feature-icon">✧</div>
+                    <h3>Topic Extraction</h3>
+                    <p>Discover key topics and subtopics to navigate document content.</p>
+                </article>
+
+                <article class="card feature-card">
+                    <div class="feature-icon">⌕</div>
+                    <h3>Custom Prompts</h3>
+                    <p>Ask targeted questions and retrieve information relevant to your needs.</p>
+                </article>
+
+                <article class="card feature-card">
+                    <div class="feature-icon">▧</div>
+                    <h3>Smart Summaries</h3>
+                    <p>Review the main ideas and important points in a clear format.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">A simple workflow</span>
+                <h2>From document to understanding</h2>
+                <p>Four steps bring your PDF content into focus.</p>
+            </div>
+
+            <div class="steps-grid">
+                <article class="step-card">
+                    <div class="step-number">01</div>
+                    <h3>Upload your PDF</h3>
+                    <p class="muted">Choose a document to explore in your workspace.</p>
+                </article>
+
+                <article class="step-card">
+                    <div class="step-number">02</div>
+                    <h3>Extract the text</h3>
+                    <p class="muted">PyMuPDF extracts readable text from your PDF.</p>
+                </article>
+
+                <article class="step-card">
+                    <div class="step-number">03</div>
+                    <h3>Analyze with AI</h3>
+                    <p class="muted">Google Gemini helps interpret the document content.</p>
+                </article>
+
+                <article class="step-card">
+                    <div class="step-number">04</div>
+                    <h3>Explore insights</h3>
+                    <p class="muted">Browse topics, read explanations, and review summaries.</p>
+                </article>
+            </div>
+
+            <div id="about" class="cta">
+                <div>
+                    <span class="eyebrow">Ready to get started?</span>
+                    <h2>Turn your documents into knowledge.</h2>
+                    <p>Start exploring your PDFs with DocInsight.</p>
+                </div>
+                <a href="{{ url_for('register') }}" class="btn">
+                    Create Your Account <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container footer-content">
+        <div>
+            <a href="{{ url_for('home') }}" class="brand">
+                <span class="brand-mark">✦</span>
+                Doc<span>Insight</span>
+            </a>
+            <p>Make every document easier to understand.</p>
+        </div>
+
+        <nav class="footer-links" aria-label="Footer navigation">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </nav>
+
+        <p>© 2026 DocInsight. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

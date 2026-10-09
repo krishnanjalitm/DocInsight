@@ -123,3 +123,31 @@ DOCUMENT 2:
     )
 
     return response.text
+
+#----------- COMPARE TWO DOCUMENTS FUNCTION----------------------------
+
+# def compare_documents(document1_text, document2_text):
+#     prompt = f"""
+# Compare these two documents.
+
+# 1. Main topic of each document
+# 2. Similarities
+# 3. Important differences
+# 4. Key points unique to each document
+
+# Use only the information in the documents.
+# Do not invent facts.
+
+# DOCUMENT 1:
+# {document1_text}
+
+# DOCUMENT 2:
+# {document2_text}
+# """
+
+#     response = client.models.generate_content(
+#         model="gemini-2.5-flash",
+#         contents=prompt
+#     )
+
+#     return response.text
