@@ -49,3 +49,49 @@ Document:
     )
 
     return response.text
+# ----------------------------------------------------------
+def extract_subtopic_info(document_text, subtopic):
+
+    prompt = f"""
+Use only the information available in the document.
+
+Explain the following subtopic clearly:
+{subtopic}
+
+If the document does not contain relevant information,
+say so. Do not invent facts.
+
+Document:
+{document_text}
+"""
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+    return response.text
+
+
+def summarize_document(document_text):
+    prompt = f"""
+Summarize the following document in simple language.
+
+Include:
+1. Main idea
+2. Important points
+3. Conclusion
+
+Use only information from the document.
+Do not invent facts.
+
+Document:
+{document_text}
+"""
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+    return response.text

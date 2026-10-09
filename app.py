@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 import os
 import sqlite3
 import uuid
+import json
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key"
@@ -91,12 +92,26 @@ def dashboard():
     if "user_id" not in session:
         return redirect(url_for("login"))
 
+    connection = get_db_connection()
+
+    documents = connection.execute(
+        """
+        SELECT document_id, filename, uploaded_at
+        FROM documents
+        WHERE user_id = ?
+        ORDER BY document_id DESC
+        """,
+        (session["user_id"],)
+    ).fetchall()
+
+    connection.close()
+
     return render_template(
         "dashboard.html",
         name=session["name"],
-        role=session["role"]
+        role=session["role"],
+        documents=documents
     )
-
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -172,6 +187,115 @@ def logout():
     session.clear()
 
     return redirect(url_for("login"))
+
+# TOPICS
+@app.route("/topics/<int:document_id>")
+def topics(document_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    document = connection.execute(
+        """
+        SELECT document_id, filename, extracted_text
+        FROM documents
+        WHERE document_id = ? AND user_id = ?
+        """,
+        (document_id, session["user_id"])
+    ).fetchone()
+
+    connection.close()
+
+    if not document:
+        return "Document not found."
+
+    if not document["extracted_text"]:
+        return "No extracted text available."
+
+    from gemini_service import extract_topics
+
+    result = extract_topics(document["extracted_text"])
+
+    topics_data = json.loads(result)
+
+    return render_template(
+        "topics.html",
+        topics=topics_data["topics"],
+        document_id=document["document_id"],
+        filename=document["filename"]
+    )
+# SUBTOPICS
+@app.route("/extract/<int:document_id>/<path:subtopic>")
+def extract_subtopic(document_id, subtopic):
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    document = connection.execute(
+        """
+        SELECT extracted_text
+        FROM documents
+        WHERE document_id = ? AND user_id = ?
+        """,
+        (document_id, session["user_id"])
+    ).fetchone()
+
+    connection.close()
+
+    if not document:
+        return "Document not found.", 404
+
+    from gemini_service import extract_subtopic_info
+
+    answer = extract_subtopic_info(
+        document["extracted_text"],
+        subtopic
+    )
+
+    return render_template(
+        "subtopic.html",
+        subtopic=subtopic,
+        answer=answer
+    )
+
+
+@app.route("/summary/<int:document_id>")
+def document_summary(document_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    document = connection.execute(
+        """
+        SELECT document_id, filename, extracted_text
+        FROM documents
+        WHERE document_id = ? AND user_id = ?
+        """,
+        (document_id, session["user_id"])
+    ).fetchone()
+
+    connection.close()
+
+    if not document:
+        return "Document not found.", 404
+
+    if not document["extracted_text"]:
+        return "No extracted text available.", 400
+
+    from gemini_service import summarize_document
+
+    summary = summarize_document(document["extracted_text"])
+
+    return render_template(
+        "summary.html",
+        filename=document["filename"],
+        summary=summary
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Topics - DocInsight</title>
+</head>
+
+<body>
+
+    <h1>DocInsight</h1>
+
+    <h2>Document Topics: {{ filename }}</h2>
+
+    {% for item in topics %}
+
+        <h3>{{ item.topic }}</h3>
+
+        <ul>
+            {% for subtopic in item.subtopics %}
+                <li>
+                    <a href="{{ url_for('extract_subtopic',
+                        document_id=document_id,
+                            subtopic=subtopic) }}">
+                        {{ subtopic }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="/dashboard">Back to Dashboard</a>
+
+</body>
+</html>

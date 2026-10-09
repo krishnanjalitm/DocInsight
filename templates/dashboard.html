@@ -51,6 +51,31 @@
 
         <button type="submit">Upload PDF</button>
 
+        <h3>Your Documents</h3>
+
+{% if documents %}
+
+    {% for document in documents %}
+
+        <p>
+            {{ document["filename"] }}
+
+            <a href="{{ url_for('topics', document_id=document['document_id']) }}">
+                View Topics
+            <a href="{{ url_for('document_summary', document_id=document['document_id']) }}">
+                Generate Summary
+</a>
+            </a>
+        </p>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No documents uploaded yet.</p>
+
+{% endif %}
+
     </form>
 
     <br>
