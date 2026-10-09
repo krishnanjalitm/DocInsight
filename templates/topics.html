@@ -1,39 +1,185 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Topics - DocInsight</title>
 
-    <title>Topics - DocInsight</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
-<body>
+<body class="dashboard-page">
 
-    <h1>DocInsight</h1>
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="{{ url_for('home') }}" class="brand">
+                <span class="brand-mark">D</span>
+                <span>DocInsight</span>
+            </a>
 
-    <h2>Document Topics: {{ filename }}</h2>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline">
+                    Dashboard
+                </a>
+            </nav>
+        </div>
+    </header>
 
-    {% for item in topics %}
+    <main class="container topics-main">
 
-        <h3>{{ item.topic }}</h3>
+        <!-- Page Heading -->
+        <section class="topics-heading">
+            <a href="{{ url_for('dashboard') }}" class="back-link">
+                <span aria-hidden="true">&larr;</span>
+                Back to Dashboard
+            </a>
 
-        <ul>
-            {% for subtopic in item.subtopics %}
-                <li>
-                    <a href="{{ url_for('extract_subtopic',
-                        document_id=document_id,
-                            subtopic=subtopic) }}">
-                        {{ subtopic }}
+            <p class="eyebrow">DOCUMENT INSIGHTS</p>
+
+            <h1>
+                Explore <span class="gradient-text">Topics</span>
+            </h1>
+
+            <p class="topics-description">
+                Discover the main ideas in your document and select
+                any subtopic to explore its explanation.
+            </p>
+
+            <div class="topics-file-info">
+                <div class="topics-file-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.6"
+                         stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <path d="M14 2v6h6"></path>
+                        <path d="M8 13h8"></path>
+                        <path d="M8 17h6"></path>
+                    </svg>
+                </div>
+
+                <div>
+                    <span class="topics-file-label">CURRENT DOCUMENT</span>
+                    <p class="topics-filename">{{ filename }}</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topics List -->
+        <section class="topics-content">
+
+            <div class="topics-section-title">
+                <div>
+                    <h2>Main topics</h2>
+                    <p>Select a subtopic to view its explanation.</p>
+                </div>
+
+                <span class="topics-count">
+                    {{ topics|length }}
+                    {% if topics|length == 1 %}topic{% else %}topics{% endif %}
+                </span>
+            </div>
+
+            {% if topics %}
+
+                <div class="topics-grid">
+
+                    {% for item in topics %}
+
+                        <article class="topic-card">
+
+                            <div class="topic-card-heading">
+                                <span class="topic-number">
+                                    {{ "%02d"|format(loop.index) }}
+                                </span>
+
+                                <span class="topic-label">MAIN TOPIC</span>
+                            </div>
+
+                            <h3 class="topic-title">
+                                {{ item.topic }}
+                            </h3>
+
+                            <div class="topic-divider"></div>
+
+                            <div class="subtopics-heading">
+                                <span>Key subtopics</span>
+                                <span>{{ item.subtopics|length }}</span>
+                            </div>
+
+                            {% if item.subtopics %}
+
+                                <ul class="subtopics-list">
+                                    {% for subtopic in item.subtopics %}
+
+                                        <li>
+                                            <a
+                                                href="{{ url_for(
+                                                    'extract_subtopic',
+                                                    document_id=document_id,
+                                                    subtopic=subtopic
+                                                ) }}"
+                                                class="subtopic-link">
+
+                                                <span class="subtopic-link-icon"
+                                                      aria-hidden="true">
+                                                    ↗
+                                                </span>
+
+                                                <span>{{ subtopic }}</span>
+
+                                                <span class="subtopic-arrow"
+                                                      aria-hidden="true">
+                                                    &rarr;
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                    {% endfor %}
+                                </ul>
+
+                            {% else %}
+
+                                <p class="no-subtopics">
+                                    No subtopics available for this topic.
+                                </p>
+
+                            {% endif %}
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="topics-empty-state">
+                    <h3>No topics found</h3>
+                    <p>
+                        No topics were extracted from this document.
+                        Return to your dashboard to select another document.
+                    </p>
+
+                    <a href="{{ url_for('dashboard') }}"
+                       class="btn topics-primary-btn">
+                        Back to Dashboard
                     </a>
-                </li>
-            {% endfor %}
-        </ul>
+                </div>
 
-    {% endfor %}
+            {% endif %}
 
-    <br>
+        </section>
 
-    <a href="/dashboard">Back to Dashboard</a>
+        <footer class="dashboard-footer topics-footer">
+            <p>DocInsight &mdash; Understand documents. Discover insights.</p>
+        </footer>
+
+    </main>
 
 </body>
 </html>
+

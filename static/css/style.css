@@ -1311,3 +1311,330 @@ input:focus-visible {
         align-items: flex-start;
     }
 }
+
+
+
+/* ==========================
+   DAY 14: TOPICS PAGE
+   ========================== */
+
+.topics-main {
+    padding-top: 36px;
+    padding-bottom: 32px;
+}
+
+.topics-heading {
+    margin-bottom: 38px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 28px;
+    color: #aeb5ce;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #c5baff;
+}
+
+.topics-heading > .eyebrow {
+    margin-bottom: 10px;
+}
+
+.topics-heading h1 {
+    margin: 0 0 14px;
+    color: #f4f5ff;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.2;
+}
+
+.topics-description {
+    max-width: 650px;
+    color: #a1a9c2;
+    line-height: 1.8;
+}
+
+.topics-file-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 620px;
+    margin-top: 26px;
+    padding: 17px;
+    border: 1px solid rgba(145, 153, 189, 0.17);
+    border-radius: 14px;
+    background: rgba(19, 25, 48, 0.7);
+}
+
+.topics-file-icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 48px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 113, 139, 0.2);
+    border-radius: 11px;
+    background: rgba(255, 113, 139, 0.08);
+    color: #ff9bad;
+}
+
+.topics-file-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.topics-file-label {
+    color: #8992af;
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.topics-filename {
+    margin: 5px 0 0;
+    color: #edf0ff;
+    font-size: 0.94rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.topics-content {
+    margin-bottom: 42px;
+}
+
+.topics-section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.topics-section-title h2 {
+    margin: 0 0 7px;
+    color: #f1f2fc;
+    font-size: 1.45rem;
+}
+
+.topics-section-title p {
+    margin: 0;
+    color: #969eb7;
+    line-height: 1.6;
+}
+
+.topics-count {
+    flex-shrink: 0;
+    padding: 7px 12px;
+    border: 1px solid rgba(145, 153, 189, 0.2);
+    border-radius: 999px;
+    color: #c7c1ff;
+    font-size: 0.82rem;
+}
+
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.topic-card {
+    min-width: 0;
+    padding: 23px;
+    border: 1px solid rgba(145, 153, 189, 0.16);
+    border-radius: 17px;
+    background: linear-gradient(
+        145deg,
+        rgba(24, 31, 58, 0.92),
+        rgba(14, 19, 39, 0.95)
+    );
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.topic-card:hover {
+    border-color: rgba(142, 125, 255, 0.38);
+    transform: translateY(-2px);
+}
+
+.topic-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 18px;
+}
+
+.topic-number {
+    display: grid;
+    place-items: center;
+    width: 37px;
+    height: 37px;
+    border: 1px solid rgba(143, 125, 255, 0.24);
+    border-radius: 10px;
+    background: rgba(122, 101, 255, 0.12);
+    color: #c3b7ff;
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.topic-label {
+    color: #8f98b4;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+}
+
+.topic-title {
+    margin: 0;
+    color: #f0f2ff;
+    font-size: 1.12rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.topic-divider {
+    height: 1px;
+    margin: 20px 0;
+    background: rgba(145, 153, 189, 0.14);
+}
+
+.subtopics-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    color: #a9b0c8;
+    font-size: 0.81rem;
+    font-weight: 600;
+}
+
+.subtopics-heading span:last-child {
+    color: #8e83ff;
+}
+
+.subtopics-list {
+    display: grid;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.subtopics-list li {
+    min-width: 0;
+}
+
+.subtopic-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: rgba(7, 11, 25, 0.42);
+    color: #c8cde0;
+    font-size: 0.87rem;
+    line-height: 1.5;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.subtopic-link:hover {
+    border-color: rgba(142, 125, 255, 0.28);
+    background: rgba(122, 101, 255, 0.09);
+    color: #e3ddff;
+}
+
+.subtopic-link-icon {
+    display: grid;
+    place-items: center;
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    background: rgba(122, 101, 255, 0.13);
+    color: #b8aaff;
+    font-size: 0.85rem;
+}
+
+.subtopic-arrow {
+    margin-left: auto;
+    padding-left: 8px;
+    flex-shrink: 0;
+    color: #8880d9;
+}
+
+.no-subtopics {
+    color: #969eb7;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.topics-empty-state {
+    padding: 40px 22px;
+    text-align: center;
+    border: 1px dashed rgba(145, 153, 189, 0.24);
+    border-radius: 16px;
+    background: rgba(19, 25, 48, 0.45);
+}
+
+.topics-empty-state h3 {
+    color: #f1f2fc;
+}
+
+.topics-empty-state p {
+    max-width: 480px;
+    margin: 0 auto 22px;
+    color: #969eb7;
+    line-height: 1.8;
+}
+
+.topics-primary-btn {
+    display: inline-flex;
+    padding: 12px 18px;
+    border-radius: 10px;
+    background: linear-gradient(110deg, #7765f5, #4c8df5);
+    color: white;
+    text-decoration: none;
+}
+
+.topics-footer {
+    margin-top: 10px;
+}
+
+@media (max-width: 760px) {
+    .topics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topics-main {
+        padding-top: 26px;
+    }
+
+    .topic-card {
+        padding: 19px;
+    }
+}
+
+@media (max-width: 480px) {
+    .topics-section-title {
+        align-items: flex-start;
+    }
+
+    .topics-file-info {
+        align-items: flex-start;
+    }
+
+    .topics-count {
+        font-size: 0.75rem;
+    }
+}
+
