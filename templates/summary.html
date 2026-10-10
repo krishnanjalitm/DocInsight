@@ -5,15 +5,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Summary - DocInsight</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-    <h1>DocInsight</h1>
 
-    <h2>Summary: {{ filename }}</h2>
+<body class="dashboard-page">
 
-    <div style="white-space: pre-wrap;">{{ summary }}</div>
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="{{ url_for('home') }}" class="brand">
+                <span class="brand-mark">D</span>
+                <span>DocInsight</span>
+            </a>
 
-    <br>
-    <a href="/dashboard">Back to Dashboard</a>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline">
+                    Dashboard
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container summary-main">
+
+        <!-- Breadcrumb -->
+        <a href="{{ url_for('dashboard') }}" class="back-link">
+            <span aria-hidden="true">&larr;</span>
+            Back to Dashboard
+        </a>
+
+        <!-- Summary Heading -->
+        <section class="summary-heading">
+            <p class="eyebrow">DOCUMENT INSIGHTS</p>
+
+            <h1>
+                Document <span class="gradient-text">Summary</span>
+            </h1>
+
+            <p>
+                Review the key information from your document
+                in one clear, readable view.
+            </p>
+
+            <div class="summary-file-info">
+                <div class="summary-file-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.6"
+                         stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <path d="M14 2v6h6"></path>
+                        <path d="M8 13h8"></path>
+                        <path d="M8 17h6"></path>
+                    </svg>
+                </div>
+
+                <div class="summary-file-details">
+                    <span class="summary-file-label">SOURCE DOCUMENT</span>
+                    <p>{{ filename }}</p>
+                </div>
+
+                <span class="summary-status">Summary ready</span>
+            </div>
+        </section>
+
+        <!-- Summary Content -->
+        <section class="summary-card">
+
+            <div class="summary-card-heading">
+                <div class="summary-heading-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.7"
+                         stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                        <path d="M8 6h13"></path>
+                        <path d="M8 12h13"></path>
+                        <path d="M8 18h13"></path>
+                        <path d="M3 6h.01"></path>
+                        <path d="M3 12h.01"></path>
+                        <path d="M3 18h.01"></path>
+                    </svg>
+                </div>
+
+                <div>
+                    <h2>Generated Summary</h2>
+                    <p>Your document's summarized content</p>
+                </div>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-text">{{ summary }}</div>
+
+        </section>
+
+        <!-- Page Actions -->
+        <div class="summary-actions">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline">
+                &larr; Back to Dashboard
+            </a>
+
+            <button type="button"
+                    class="btn summary-copy-btn"
+                    onclick="copySummary()">
+                Copy Summary
+            </button>
+        </div>
+
+        <p id="copy-status" class="summary-copy-status"
+           role="status" aria-live="polite"></p>
+
+        <footer class="dashboard-footer summary-footer">
+            <p>DocInsight &mdash; Understand documents. Discover insights.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        function copySummary() {
+            const summaryElement = document.querySelector(".summary-text");
+            const statusElement = document.getElementById("copy-status");
+            const text = summaryElement.innerText;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        statusElement.textContent = "Summary copied successfully.";
+                    })
+                    .catch(() => {
+                        fallbackCopy(text, statusElement);
+                    });
+            } else {
+                fallbackCopy(text, statusElement);
+            }
+        }
+
+        function fallbackCopy(text, statusElement) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            try {
+                const copied = document.execCommand("copy");
+                statusElement.textContent = copied
+                    ? "Summary copied successfully."
+                    : "Copy failed. Please select and copy the summary manually.";
+            } catch (error) {
+                statusElement.textContent =
+                    "Copy failed. Please select and copy the summary manually.";
+            }
+
+            textArea.remove();
+        }
+    </script>
+
 </body>
 </html>
