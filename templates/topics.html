@@ -1,185 +1,258 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Topics - DocInsight</title>
+    <title>Document Explorer - DocInsight</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
-<body class="dashboard-page">
+<body class="explorer-page">
 
-    <!-- Navigation -->
-    <header class="navbar">
-        <div class="container nav-content">
-            <a href="{{ url_for('home') }}" class="brand">
-                <span class="brand-mark">D</span>
+    <div class="explorer-layout">
+
+        <!-- LEFT SIDEBAR -->
+        <aside class="explorer-sidebar">
+
+            <a href="{{ url_for('home') }}" class="explorer-brand">
+                <span class="explorer-brand-icon">D</span>
                 <span>DocInsight</span>
             </a>
 
-            <nav class="nav-links">
-                <a href="{{ url_for('dashboard') }}" class="btn btn-outline">
-                    Dashboard
+            <p class="sidebar-label">WORKSPACE</p>
+
+            <nav class="explorer-nav">
+
+                <a href="{{ url_for('dashboard') }}" class="explorer-nav-link">
+                    <span class="nav-symbol">⌂</span>
+                    <span>Dashboard</span>
                 </a>
+
+                <a href="{{ url_for('dashboard') }}"
+                   class="explorer-nav-link">
+                    <span class="nav-symbol">⇧</span>
+                    <span>Upload Document</span>
+                </a>
+
+                <a href="#document-topics"
+                   class="explorer-nav-link active">
+                    <span class="nav-symbol">☷</span>
+                    <span>Document Explorer</span>
+                </a>
+
             </nav>
-        </div>
-    </header>
 
-    <main class="container topics-main">
+            <div class="sidebar-document">
+                <p class="sidebar-label">CURRENT DOCUMENT</p>
 
-        <!-- Page Heading -->
-        <section class="topics-heading">
-            <a href="{{ url_for('dashboard') }}" class="back-link">
-                <span aria-hidden="true">&larr;</span>
-                Back to Dashboard
-            </a>
-
-            <p class="eyebrow">DOCUMENT INSIGHTS</p>
-
-            <h1>
-                Explore <span class="gradient-text">Topics</span>
-            </h1>
-
-            <p class="topics-description">
-                Discover the main ideas in your document and select
-                any subtopic to explore its explanation.
-            </p>
-
-            <div class="topics-file-info">
-                <div class="topics-file-icon">
-                    <svg viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="1.6"
-                         stroke-linecap="round" stroke-linejoin="round"
-                         aria-hidden="true">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <path d="M14 2v6h6"></path>
-                        <path d="M8 13h8"></path>
-                        <path d="M8 17h6"></path>
-                    </svg>
-                </div>
-
-                <div>
-                    <span class="topics-file-label">CURRENT DOCUMENT</span>
-                    <p class="topics-filename">{{ filename }}</p>
+                <div class="sidebar-file">
+                    <span class="sidebar-pdf-icon">PDF</span>
+                    <span class="sidebar-file-name">{{ filename }}</span>
                 </div>
             </div>
-        </section>
 
-        <!-- Topics List -->
-        <section class="topics-content">
-
-            <div class="topics-section-title">
-                <div>
-                    <h2>Main topics</h2>
-                    <p>Select a subtopic to view its explanation.</p>
-                </div>
-
-                <span class="topics-count">
-                    {{ topics|length }}
-                    {% if topics|length == 1 %}topic{% else %}topics{% endif %}
-                </span>
+            <div class="sidebar-bottom">
+                <a href="/logout" class="explorer-logout">
+                    <span class="nav-symbol">↪</span>
+                    <span>Logout</span>
+                </a>
             </div>
 
-            {% if topics %}
+        </aside>
 
-                <div class="topics-grid">
+        <!-- MAIN CONTENT -->
+        <main class="explorer-main">
 
-                    {% for item in topics %}
-
-                        <article class="topic-card">
-
-                            <div class="topic-card-heading">
-                                <span class="topic-number">
-                                    {{ "%02d"|format(loop.index) }}
-                                </span>
-
-                                <span class="topic-label">MAIN TOPIC</span>
-                            </div>
-
-                            <h3 class="topic-title">
-                                {{ item.topic }}
-                            </h3>
-
-                            <div class="topic-divider"></div>
-
-                            <div class="subtopics-heading">
-                                <span>Key subtopics</span>
-                                <span>{{ item.subtopics|length }}</span>
-                            </div>
-
-                            {% if item.subtopics %}
-
-                                <ul class="subtopics-list">
-                                    {% for subtopic in item.subtopics %}
-
-                                        <li>
-                                            <a
-                                                href="{{ url_for(
-                                                    'extract_subtopic',
-                                                    document_id=document_id,
-                                                    subtopic=subtopic
-                                                ) }}"
-                                                class="subtopic-link">
-
-                                                <span class="subtopic-link-icon"
-                                                      aria-hidden="true">
-                                                    ↗
-                                                </span>
-
-                                                <span>{{ subtopic }}</span>
-
-                                                <span class="subtopic-arrow"
-                                                      aria-hidden="true">
-                                                    &rarr;
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                    {% endfor %}
-                                </ul>
-
-                            {% else %}
-
-                                <p class="no-subtopics">
-                                    No subtopics available for this topic.
-                                </p>
-
-                            {% endif %}
-
-                        </article>
-
-                    {% endfor %}
-
-                </div>
-
-            {% else %}
-
-                <div class="topics-empty-state">
-                    <h3>No topics found</h3>
-                    <p>
-                        No topics were extracted from this document.
-                        Return to your dashboard to select another document.
+            <header class="explorer-topbar">
+                <div>
+                    <p class="explorer-breadcrumb">
+                        Workspace <span>/</span> Document Explorer
                     </p>
-
-                    <a href="{{ url_for('dashboard') }}"
-                       class="btn topics-primary-btn">
-                        Back to Dashboard
-                    </a>
+                    <p class="explorer-topbar-title">
+                        Intelligent Document Explorer
+                    </p>
                 </div>
 
-            {% endif %}
+                <a href="{{ url_for('dashboard') }}"
+                   class="explorer-back-button">
+                    ← All Documents
+                </a>
+            </header>
 
-        </section>
+            <section class="explorer-content">
 
-        <footer class="dashboard-footer topics-footer">
-            <p>DocInsight &mdash; Understand documents. Discover insights.</p>
-        </footer>
+                <div class="explorer-page-heading">
+                    <div>
+                        <span class="explorer-overline">
+                            DOCUMENT ANALYSIS
+                        </span>
 
-    </main>
+                        <h1>Explore your document</h1>
+
+                        <p>
+                            Navigate through the key topics extracted
+                            from your PDF.
+                        </p>
+                    </div>
+
+                    <div class="explorer-topic-count">
+                        <span class="count-number">
+                            {{ topics|length }}
+                        </span>
+                        <span class="count-label">
+                            Topics found
+                        </span>
+                    </div>
+                </div>
+
+                <!-- DOCUMENT INFORMATION -->
+                <section class="explorer-document-card">
+                    <div class="explorer-document-icon">
+                        <svg viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.7"
+                             stroke-linecap="round" stroke-linejoin="round"
+                             aria-hidden="true">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <path d="M14 2v6h6"/>
+                            <path d="M8 13h8M8 17h6"/>
+                        </svg>
+                    </div>
+
+                    <div class="explorer-document-info">
+                        <span>SELECTED DOCUMENT</span>
+                        <h2>{{ filename }}</h2>
+                        <p>Topics generated from your uploaded PDF</p>
+                    </div>
+
+                    <span class="document-status">
+                        <span></span>
+                        Analyzed
+                    </span>
+                </section>
+
+                <!-- TOPIC EXPLORER -->
+                <section id="document-topics" class="explorer-topics-section">
+
+                    <div class="explorer-section-heading">
+                        <div>
+                            <h2>Document topics</h2>
+                            <p>
+                                Select a topic to view its subtopics.
+                                Select a subtopic to read its explanation.
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if topics %}
+
+                        <div class="explorer-topic-list">
+
+                            {% for item in topics %}
+
+                                <details class="explorer-topic"
+                                         {% if loop.first %}open{% endif %}>
+
+                                    <summary class="explorer-topic-summary">
+
+                                        <span class="explorer-topic-index">
+                                            {{ "%02d"|format(loop.index) }}
+                                        </span>
+
+                                        <span class="explorer-topic-name">
+                                            {{ item.topic }}
+                                        </span>
+
+                                        <span class="explorer-subtopic-count">
+                                            {{ item.subtopics|length }}
+                                            {% if item.subtopics|length == 1 %}
+                                                subtopic
+                                            {% else %}
+                                                subtopics
+                                            {% endif %}
+                                        </span>
+
+                                        <span class="explorer-chevron"
+                                              aria-hidden="true">⌄</span>
+
+                                    </summary>
+
+                                    <div class="explorer-topic-details">
+
+                                        {% if item.subtopics %}
+
+                                            {% for subtopic in item.subtopics %}
+
+                                                <a
+                                                    class="explorer-subtopic"
+                                                    href="{{ url_for(
+                                                        'extract_subtopic',
+                                                        document_id=document_id,
+                                                        subtopic=subtopic
+                                                    ) }}">
+
+                                                    <span class="subtopic-bullet">
+                                                        ↗
+                                                    </span>
+
+                                                    <span class="subtopic-name">
+                                                        {{ subtopic }}
+                                                    </span>
+
+                                                    <span class="subtopic-open">
+                                                        View explanation →
+                                                    </span>
+
+                                                </a>
+
+                                            {% endfor %}
+
+                                        {% else %}
+
+                                            <p class="explorer-no-subtopics">
+                                                No subtopics were found
+                                                under this topic.
+                                            </p>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </details>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="explorer-empty">
+                            <h3>No topics found</h3>
+                            <p>
+                                This document did not produce any topics.
+                                Return to your dashboard to continue.
+                            </p>
+
+                            <a href="{{ url_for('dashboard') }}"
+                               class="explorer-primary-button">
+                                Back to Dashboard
+                            </a>
+                        </div>
+
+                    {% endif %}
+
+                </section>
+
+                <footer class="explorer-footer">
+                    DocInsight · Intelligent Document Understanding
+                </footer>
+
+            </section>
+
+        </main>
+
+    </div>
 
 </body>
 </html>
-

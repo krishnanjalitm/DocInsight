@@ -1,18 +1,96 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ subtopic }} - DocInsight</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
 
-    <h1>{{ subtopic }}</h1>
+<body class="dashboard-page">
 
-    <h3>Explanation</h3>
-    <div style="white-space: pre-wrap;">{{ answer }}</div>
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="{{ url_for('home') }}" class="brand">
+                <span class="brand-mark">D</span>
+                <span>DocInsight</span>
+            </a>
 
-    <br>
-    <a href="/dashboard">Back to Dashboard</a>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline">
+                    Dashboard
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container explanation-main">
+
+        <!-- Breadcrumb -->
+        <a href="{{ url_for('dashboard') }}" class="back-link">
+            <span aria-hidden="true">&larr;</span>
+            Back to Dashboard
+        </a>
+
+        <!-- Page Heading -->
+        <section class="explanation-heading">
+            <p class="eyebrow">AI-POWERED LEARNING</p>
+
+            <h1>{{ subtopic }}</h1>
+
+            <p>
+                Explore this concept through an AI-generated explanation
+                based on your document analysis.
+            </p>
+        </section>
+
+        <!-- Explanation Card -->
+        <article class="explanation-card">
+
+            <div class="explanation-card-heading">
+                <div class="explanation-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.7"
+                         stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true">
+                        <path d="M12 3a7 7 0 0 0-4 12.75c.6.4 1 1.1 1 1.75h6c0-.65.4-1.35 1-1.75A7 7 0 0 0 12 3z"></path>
+                        <path d="M9 21h6"></path>
+                        <path d="M10 18h4"></path>
+                    </svg>
+                </div>
+
+                <div>
+                    <h2>Explanation</h2>
+                    <p>Understand the concept step by step</p>
+                </div>
+
+                <span class="ai-badge">AI INSIGHT</span>
+            </div>
+
+            <div class="explanation-divider"></div>
+
+            <div class="explanation-answer">{{ answer }}</div>
+
+        </article>
+
+        <!-- Bottom Navigation -->
+        <div class="explanation-actions">
+            <a href="{{ url_for('dashboard') }}"
+               class="btn btn-outline">
+                &larr; Back to Dashboard
+            </a>
+        </div>
+
+        <footer class="dashboard-footer explanation-footer">
+            <p>DocInsight &mdash; Understand documents. Discover insights.</p>
+        </footer>
+
+    </main>
 
 </body>
 </html>
+
